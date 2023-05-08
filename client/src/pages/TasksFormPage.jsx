@@ -1,18 +1,38 @@
 import {useForm} from 'react-hook-form';
-import { createTask } from '../api/tasks.api';
+import { createTask, updateTask } from '../api/tasks.api';
 import { useNavigate, useParams } from 'react-router-dom';
 import { deleteTask } from '../api/tasks.api';
+import { useEffect } from 'react';
+import { getTask } from '../api/tasks.api';
 
 const TasksFormPage = () => {
-  const {register, handleSubmit, formState: {
+  const {register, handleSubmit, setValue, formState: {
     errors
   }} = useForm();
   const navigate = useNavigate();
   const params = useParams();
 
+  useEffect(() => {
+    if (!params.id) return;
+
+    const loadTask = async () => {
+      const {data} = await getTask(params.id);
+      setValue('title', data.title);
+      setValue('description', data.description);
+    }
+
+    loadTask();
+  }, [params.id]);
+
   const onSubmit = handleSubmit(async (data) => {
-    await createTask(data)
     navigate('/tasks');
+
+    if (params.id) {
+      await updateTask(params.id, data);
+      return;
+    }
+
+    await createTask(data)
   });
 
   return (
