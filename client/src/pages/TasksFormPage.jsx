@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { deleteTask } from '../api/tasks.api';
 import { useEffect } from 'react';
 import { getTask } from '../api/tasks.api';
+import { toast } from 'react-hot-toast';
 
 const TasksFormPage = () => {
   const {register, handleSubmit, setValue, formState: {
@@ -25,14 +26,27 @@ const TasksFormPage = () => {
   }, [params.id]);
 
   const onSubmit = handleSubmit(async (data) => {
-    navigate('/tasks');
-
     if (params.id) {
-      await updateTask(params.id, data);
-      return;
+      await updateTask(params.id, data);      
+      toast.success('Task updated successfully', {
+        position: 'top-right', 
+        style: {
+          background: '#101010',
+          color: '#fff',
+        }
+      })
+    } else {
+      await createTask(data)
+      toast.success('Task created successfully', {
+        position: 'top-right', 
+        style: {
+          background: '#101010',
+          color: '#fff',
+        }
+      })
     }
 
-    await createTask(data)
+    navigate('/tasks');
   });
 
   return (
@@ -62,6 +76,13 @@ const TasksFormPage = () => {
             if (accepted) {
               await deleteTask(params.id);
               navigate('/tasks');
+              toast.success('Task deleted successfully', {
+                position: 'top-right', 
+                style: {
+                  background: '#101010',
+                  color: '#fff',
+                }
+              })
             }
           }}
         >
