@@ -15,11 +15,14 @@ const TasksList = () => {
   }, []);
 
   return (
-    <>
+    <div>
     {tasks.map((task) => (
-      <TaskCard key={task.id} task={task}/>
+      <TaskCard 
+        key={task.id} 
+        task={task}
+      />
     ))} 
-    </>
+    </div>
   );
 }
  

@@ -1,5 +1,6 @@
+import PropTypes from 'prop-types';
 
-export function TaskCard(task){
+const TaskCard = ({task}) => {
   return ( 
     <div>
         <h1>{task.title}</h1>
@@ -7,4 +8,9 @@ export function TaskCard(task){
       </div>
    );
 }
+
+TaskCard.propTypes = {
+  task: PropTypes.object.isRequired
+}
  
+export default TaskCard;
