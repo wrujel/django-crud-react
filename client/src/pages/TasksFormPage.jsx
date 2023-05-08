@@ -1,12 +1,14 @@
 import {useForm} from 'react-hook-form';
 import { createTask } from '../api/tasks.api';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { deleteTask } from '../api/tasks.api';
 
 const TasksFormPage = () => {
   const {register, handleSubmit, formState: {
     errors
   }} = useForm();
   const navigate = useNavigate();
+  const params = useParams();
 
   const onSubmit = handleSubmit(async (data) => {
     await createTask(data)
@@ -32,6 +34,21 @@ const TasksFormPage = () => {
 
         <button>Submit</button>
       </form>
+
+      {params.id && (
+        <button
+          onClick={async () => {
+            const accepted = window.confirm('Are you sure?');
+            if (accepted) {
+              await deleteTask(params.id);
+              navigate('/tasks');
+            }
+          }}
+        >
+          Delete
+        </button> 
+      )}
+      
     </div>
   );
 }
