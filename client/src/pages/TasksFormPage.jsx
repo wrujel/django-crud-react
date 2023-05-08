@@ -50,12 +50,13 @@ const TasksFormPage = () => {
   });
 
   return (
-    <div>
+    <div className='max-w-xl mx-auto'>
       <form onSubmit={onSubmit}>
         <input 
           type="text" 
           placeholder="title" 
           {...register('title', {required: true})}
+          className='bg-zin-700 p-3 rounded-lg block w-full mb-3'
         />
         {errors.title && <span>Title is required</span>}
 
@@ -63,33 +64,39 @@ const TasksFormPage = () => {
           name="description" id="desc" cols="30" rows="10" 
           placeholder="Description" 
           {...register('description', {required: true})}
+          className='bg-zin-700 p-3 rounded-lg block w-full mb-3'
         />
         {errors.description && <span>Description is required</span>}
 
-        <button>Submit</button>
-      </form>
-
-      {params.id && (
+        <div className='flex justify-between gap-4'>
         <button
-          onClick={async () => {
-            const accepted = window.confirm('Are you sure?');
-            if (accepted) {
-              await deleteTask(params.id);
-              navigate('/tasks');
-              toast.success('Task deleted successfully', {
-                position: 'top-right', 
-                style: {
-                  background: '#101010',
-                  color: '#fff',
-                }
-              })
-            }
-          }}
+          className='bg-indigo-500 p-3 rounded-lg w-full mt-3'
         >
-          Delete
-        </button> 
-      )}
-      
+          Submit
+        </button>
+          {params.id && (
+              <button
+                className='bg-red-500 p-3 rounded-lg w-48 mt-3'
+                onClick={async () => {
+                  const accepted = window.confirm('Are you sure?');
+                  if (accepted) {
+                    await deleteTask(params.id);
+                    navigate('/tasks');
+                    toast.success('Task deleted successfully', {
+                      position: 'top-right', 
+                      style: {
+                        background: '#101010',
+                        color: '#fff',
+                      }
+                    })
+                  }
+                }}
+              >
+                Delete
+              </button>
+          )}  
+        </div>
+      </form>      
     </div>
   );
 }
