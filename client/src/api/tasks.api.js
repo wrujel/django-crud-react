@@ -1,7 +1,12 @@
 import axios from "axios";
 
+const URL =
+  import.meta.env.NODE_ENV === "production"
+    ? import.meta.env.VITE_BACKEND_URL
+    : "http://localhost:8000";
+
 const tasksUrl = axios.create({
-  baseURL: "http://localhost:8000/tasks/api/v1/tasks/",
+  baseURL: `${URL}/tasks/api/v1/tasks/`,
 });
 
 export const getTask = (id) => tasksUrl.get(`/${id}/`);
