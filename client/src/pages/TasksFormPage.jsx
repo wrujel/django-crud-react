@@ -55,7 +55,7 @@ const TasksFormPage = () => {
       })
     }
 
-    navigate('/');
+    navigate('/tasks');
   });
 
   return (

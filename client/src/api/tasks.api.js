@@ -7,7 +7,7 @@ const URL =
     : "http://localhost:8000";
 
 const tasksUrl = axios.create({
-  baseURL: `${URL}/api/v1/tasks/`,
+  baseURL: `${URL}/tasks/api/v1/tasks/`,
 });
 
 export const getTask = (id) => tasksUrl.get(`/${id}/`);
