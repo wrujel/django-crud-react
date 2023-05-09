@@ -14,7 +14,11 @@ const TasksFormPage = () => {
   const params = useParams();
 
   useEffect(() => {
-    if (!params.id) return;
+    if (!params.id) {
+      setValue('title', '');
+      setValue('description', '');
+      return
+    }
 
     const loadTask = async () => {
       const {data} = await getTask(params.id);
@@ -22,14 +26,20 @@ const TasksFormPage = () => {
       setValue('description', data.description);
     }
 
-    loadTask();
-  }, [params.id]);
+    toast.promise(
+      loadTask(),
+      {
+        loading: 'Loading task...',
+        success: <b>Task loaded</b>,
+        error: <b>Could not load task</b>
+      }
+    )
+  }, [params.id, setValue]);
 
   const onSubmit = handleSubmit(async (data) => {
     if (params.id) {
       await updateTask(params.id, data);      
       toast.success('Task updated successfully', {
-        position: 'top-right', 
         style: {
           background: '#101010',
           color: '#fff',
@@ -38,7 +48,6 @@ const TasksFormPage = () => {
     } else {
       await createTask(data)
       toast.success('Task created successfully', {
-        position: 'top-right', 
         style: {
           background: '#101010',
           color: '#fff',
@@ -54,9 +63,9 @@ const TasksFormPage = () => {
       <form onSubmit={onSubmit}>
         <input 
           type="text" 
-          placeholder="title" 
+          placeholder="Title" 
           {...register('title', {required: true})}
-          className='bg-zin-700 p-3 rounded-lg block w-full mb-3'
+          className='bg-zinc-700 p-3 rounded-lg block w-full mb-3'
         />
         {errors.title && <span>Title is required</span>}
 
@@ -64,7 +73,7 @@ const TasksFormPage = () => {
           name="description" id="desc" cols="30" rows="10" 
           placeholder="Description" 
           {...register('description', {required: true})}
-          className='bg-zin-700 p-3 rounded-lg block w-full mb-3'
+          className='bg-zinc-700 p-3 rounded-lg block w-full mb-3'
         />
         {errors.description && <span>Description is required</span>}
 
@@ -72,7 +81,7 @@ const TasksFormPage = () => {
         <button
           className='bg-indigo-500 p-3 rounded-lg w-full mt-3'
         >
-          Submit
+          Save
         </button>
           {params.id && (
               <button
@@ -83,7 +92,6 @@ const TasksFormPage = () => {
                     await deleteTask(params.id);
                     navigate('/tasks');
                     toast.success('Task deleted successfully', {
-                      position: 'top-right', 
                       style: {
                         background: '#101010',
                         color: '#fff',
