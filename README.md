@@ -88,7 +88,7 @@ This project is a simple REST API with a React frontend. The API is built with D
 - [Vite](https://vitejs.dev/)
 
 ## Demo
-You can check out the demo [here](https://django-crud-react-production.up.railway.app/)
+You can check out the demo [here](https://django-crud-react.onrender.com)
 
 ## Documentation
-You can check out the API documentation [here](https://django-crud-react-production.up.railway.app/tasks/docs/)
+You can check out the API documentation [here](https://django-crud-react.onrender.com/tasks/docs)
