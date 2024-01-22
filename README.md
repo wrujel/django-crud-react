@@ -21,6 +21,12 @@
       alt='License'
     />
   </a>
+  <a href="/">
+    <img 
+      src="https://img.shields.io/badge/Deploy-Running-success.svg" 
+      alt="Deployed" 
+    />
+  </a>
   <a href='https://www.djangoproject.com/'>
     <img
       src='https://img.shields.io/badge/Django-3.2.5-blue.svg?style=flat&logo=django'
@@ -49,12 +55,6 @@
     <img
       src='https://img.shields.io/badge/Coreapi-2.3.3-blue.svg?style=flat&logo=coreapi'
       alt='Coreapi'
-    />
-  </a>
-  <a href='https://railway.app/'>
-    <img
-      src='https://img.shields.io/badge/Railway-Deployed-success.svg?style=flat&logo=railway'
-      alt='Railway'
     />
   </a>
   <a href='https://vitejs.dev/'>
