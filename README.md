@@ -1,8 +1,13 @@
+[demo-link]: https://django-crud-react.onrender.com
+[demo]: https://img.shields.io/badge/🚀Live%20Demo-000000?style=for-the-badge&&logoColor=white&color=0a6bdb
+[tests-passed]: https://img.shields.io/badge/Test-Passed-success?style=for-the-badge&logo=github&logoColor=white&color=green
+[build]: https://img.shields.io/badge/Build-Passing-success?style=for-the-badge&logo=github&logoColor=white&color=green
+
 <div align='center'>
 
-  [![Deploy][deploy-active]](/) 
-  [![Tests][tests-passed]](/) 
-  [![Buy me a coffee][buy-me-a-coffee]][buy-me-a-coffee-link]
+  [![demo][demo]][demo-link]
+  [![build][build]](/)
+  [![test][tests-passed]](/)
 
 </div>
 
@@ -11,6 +16,7 @@
     <img
       src='/client/public/screenshot.png'
       alt='Screenshot of the app'
+      width='70%'
     />
   </a>
 </div>
@@ -63,17 +69,19 @@
 - [Vite](https://vitejs.dev/)
 
 ## Demo
-You can check out the demo [here](https://django-crud-react.onrender.com)
+You can check out the demo:
+
+[![demo][demo]][demo-link]
 
 ## Documentation
-You can check out the API documentation [here](https://django-crud-react.onrender.com/tasks/docs)
+You can check out the API documentation:
+
+[![documentation][documentation]](https://django-crud-react.onrender.com/tasks/docs)
 
 
 
 <!-- Badges -->
-[deploy-active]: https://img.shields.io/badge/Deploy-Active-success?style=for-the-badge&logoColor=white
-[tests-passed]: https://img.shields.io/badge/Test-Passed-success?style=for-the-badge&color=green
-[buy-me-a-coffee]: https://img.shields.io/badge/Buy%20me%20a%20coffee-FF813F?style=for-the-badge&logo=buy-me-a-coffee
+[documentation]: https://img.shields.io/badge/Documentation-gray?style=for-the-badge&logo=coreapi&logoColor=white
 [nextjs]: https://img.shields.io/badge/Next.js-black?style=for-the-badge&logo=next.js
 [typescript]: https://img.shields.io/badge/Typescript-007ACC?style=for-the-badge&logo=typescript&logoColor=white&color=blue
 [tailwindcss]: https://img.shields.io/badge/Tailwind%20CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
@@ -110,7 +118,6 @@ You can check out the API documentation [here](https://django-crud-react.onrende
 [coreapi]: https://img.shields.io/badge/Coreapi-gray.svg?style=for-the-badge&logo=coreapi
 
 <!-- Badges links -->
-[buy-me-a-coffee-link]: https://www.buymeacoffee.com/wrujel
 [nextjs-link]: https://nextjs.org/
 [typescript-link]: https://www.typescriptlang.org/
 [tailwindcss-link]: https://tailwindcss.com/
