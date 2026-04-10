@@ -1,11 +1,3 @@
-[demo]: https://img.shields.io/badge/🚀%20Live%20Demo-000000?style=for-the-badge&&logoColor=white&color=0a6bdb
-[status-link]: https://github.com/wrujel/monitor-repos
-[tests-link]: https://github.com/wrujel/monitor-tests
-
-[demo-link]: https://django-crud-react.onrender.com
-[status]: https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fwrujel%2Fmonitor-repos%2Fmain%2Fdata%2Fdjango-crud-react.json
-[tests]: https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fwrujel%2Fmonitor-tests%2Fmain%2Fdata%2Fdjango-crud-react.json
-
 <div align='center'>
 
   [![demo][demo]][demo-link]
@@ -19,153 +11,240 @@
     <img
       src='/images/screenshot.png'
       alt='Screenshot of the app'
-      width='70%'
+      width='100%'
     />
   </a>
 </div>
 
 <div align='center'>
-  <h1>REST API with Django and React</h1>
+  <h1>CRUD Task App with Django and React</h1>
 </div>
 
 <div align='center'>
 
   [![Django][django]][django-link]
   [![Django REST Framework][django-rest-framework]][django-rest-framework-link]
+  [![Python][python]][python-link]
   [![React][react]][react-link]
-  [![Tailwindcss][tailwindcss]][tailwindcss-link]
-  [![Coreapi][coreapi]][coreapi-link]
   [![Vite][vite]][vite-link]
+  [![Tailwind CSS][tailwindcss]][tailwindcss-link]
+  [![Axios][axios]][axios-link]
+  [![React Hook Form][react-hook-form]][react-hook-form-link]
 
 </div>
 
 <div align='center'>
-  This project is a simple REST API with a React frontend. The API is built with Django and Django REST Framework. The frontend is built with React and uses Axios to make requests to the API. The API is documented with Coreapi. The project is deployed in Railway.
+  A full-stack CRUD task management application built with Django REST Framework on the backend and React with Vite on the frontend. Create, read, update, and delete tasks with a modern, responsive UI styled with Tailwind CSS.
 
-  [Demo](https://django-crud-react.onrender.com) · [Report issue](/issues) · [Suggest something](/issues)
+  [Demo]({{DEMO_URL}}) · [Report issue](/issues) · [Suggest something](/issues)
 </div>
 
 ## Table of Contents
+
 - [Table of Contents](#table-of-contents)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Running locally](#running-locally)
+  - [Build](#build)
+- [Environment Variables](#environment-variables)
+- [Project Structure](#project-structure)
 - [Demo](#demo)
-- [Documentation](#documentation)
+- [API Reference](#api-reference)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Features
-- [x] Has a CRUD API for a task model
-- [x] API built with Django and Django REST Framework
-- [x] Has a React frontend that uses Axios to make requests to the API
-- [x] Vite used to build the frontend
-- [x] Use tailwindcss for styling
-- [x] Use coreapi to document the API
-- [x] Deployed in Railway
+
+- [x] Full CRUD operations for tasks (Create, Read, Update, Delete)
+- [x] REST API built with Django REST Framework
+- [x] React frontend with Vite for fast development
+- [x] Responsive UI styled with Tailwind CSS
+- [x] Form handling with React Hook Form
+- [x] Client-side routing with React Router DOM
+- [x] Toast notifications with React Hot Toast
+- [x] API documentation with CoreAPI
+- [x] CORS support with django-cors-headers
+- [x] Static file serving with WhiteNoise
+- [x] Database configuration with dj-database-url
+- [x] Production-ready deployment with Gunicorn
+- [x] Deployable on Railway with Nixpacks
 
 ## Tech Stack
-- [Django](https://www.djangoproject.com/)
+
+- [Python](https://www.python.org/)
+- [Django 4.2](https://www.djangoproject.com/)
 - [Django REST Framework](https://www.django-rest-framework.org/)
-- [React](https://reactjs.org/)
-- [Axios](https://axios-http.com/docs/intro)
-- [Tailwindcss](https://tailwindcss.com/)
-- [Coreapi](https://www.coreapi.org/)
-- [Railway](https://railway.app/)
-- [Vite](https://vitejs.dev/)
+- [React 18](https://react.dev/)
+- [Vite](https://vite.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Axios](https://axios-http.com/)
+- [React Hook Form](https://react-hook-form.com/)
+- [React Router DOM](https://reactrouter.com/)
+- [React Hot Toast](https://react-hot-toast.com/)
+- [WhiteNoise](https://whitenoise.readthedocs.io/)
+- [Gunicorn](https://gunicorn.org/)
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.10+
+- Node.js 18+
+- npm
+
+### Installation
+
+```bash
+git clone https://github.com/wrujel/django-crud-react.git
+cd django-crud-react
+pip install -r requirements.txt
+cd client
+npm install
+cd ..
+```
+
+### Running locally
+
+Start the Django backend:
+
+```bash
+python manage.py migrate
+python manage.py runserver
+```
+
+In a separate terminal, start the React frontend:
+
+```bash
+cd client
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173) with your browser to see the React frontend.
+The Django API will be available at [http://localhost:8000](http://localhost:8000).
+
+### Build
+
+Build the React frontend for production:
+
+```bash
+cd client
+npm run build
+```
+
+Then collect static files and run with Gunicorn:
+
+```bash
+python manage.py collectstatic
+gunicorn django_crud_api.wsgi
+```
+
+## Environment Variables
+
+| Variable           | Description                                                | Required |
+| :----------------- | :--------------------------------------------------------- | :------: |
+| `DATABASE_URL`     | Database connection string (defaults to SQLite if not set) |    No    |
+| `VITE_BACKEND_URL` | Backend URL for the React app in production                |   Yes    |
+
+## Project Structure
+
+```
+/
+├── client/                  # React frontend
+│   ├── public/
+│   ├── src/
+│   │   ├── api/
+│   │   │   └── tasks.api.js
+│   │   ├── components/
+│   │   │   ├── Navigation.jsx
+│   │   │   ├── TaskCard.jsx
+│   │   │   └── TasksList.jsx
+│   │   ├── pages/
+│   │   │   ├── TasksFormPage.jsx
+│   │   │   └── TasksPage.jsx
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   ├── package.json
+│   ├── tailwind.config.js
+│   └── vite.config.js
+├── django_crud_api/         # Django project settings
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+├── tasks/                   # Django tasks app
+│   ├── models.py
+│   ├── serializer.py
+│   ├── urls.py
+│   └── views.py
+├── images/
+│   └── screenshot.png
+├── manage.py
+├── requirements.txt
+├── Procfile
+├── nixpacks.toml
+└── runtime.txt
+```
 
 ## Demo
+
 You can check out the demo:
 
-[![demo][demo]][demo-link]
+[![Demo][demo]][demo-link]
 
-## Documentation
-You can check out the API documentation:
+## API Reference
 
-[![documentation][documentation]](https://django-crud-react.onrender.com/tasks/docs)
+| Method   | Endpoint                   | Description       | Auth Required |
+| :------- | :------------------------- | :---------------- | :-----------: |
+| `GET`    | `/tasks/api/v1/tasks/`     | List all tasks    |      No       |
+| `POST`   | `/tasks/api/v1/tasks/`     | Create a new task |      No       |
+| `GET`    | `/tasks/api/v1/tasks/:id/` | Get task by ID    |      No       |
+| `PUT`    | `/tasks/api/v1/tasks/:id/` | Update a task     |      No       |
+| `DELETE` | `/tasks/api/v1/tasks/:id/` | Delete a task     |      No       |
+| `GET`    | `/tasks/docs/`             | API documentation |      No       |
 
+## Contributing
 
+Contributions are welcome! If you have suggestions or find bugs, please open an issue or submit a pull request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
 
 <!-- Badges -->
-[nextjs]: https://img.shields.io/badge/Next.js-black?style=for-the-badge&logo=next.js
-[typescript]: https://img.shields.io/badge/Typescript-007ACC?style=for-the-badge&logo=typescript&logoColor=white&color=blue
-[tailwindcss]: https://img.shields.io/badge/Tailwind%20CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
-[react]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[lodash]: https://img.shields.io/badge/Lodash-2A2A2A?style=for-the-badge&logo=lodash
-[next-auth]: https://img.shields.io/badge/Next--Auth-black?style=for-the-badge&logo=next.js
-[prisma]: https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white
-[axios]: https://img.shields.io/badge/Axios-671ddf?style=for-the-badge&logo=axios&logoColor=white
-[react-icons]: https://img.shields.io/badge/React--Icons-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[swr]: https://img.shields.io/badge/SWR-black?style=for-the-badge&logo=next.js
-[zustand]: https://img.shields.io/badge/Zustand-2A2A2A?style=for-the-badge&logo=npm
-[react-player]: https://img.shields.io/badge/React--Player-2A2A2A?style=for-the-badge&logo=npm
-[mongodb]: https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white
-[vercel]: https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white
-[html]: https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white
-[css]: https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white
-[javascript]: https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E
-[netlify]: https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white
-[vite]: https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white
-[astro]: https://img.shields.io/badge/Astro-0C1222?style=for-the-badge&logo=astro&logoColor=FDFDFE
-[express]: https://img.shields.io/badge/Express%20js-000000?style=for-the-badge&logo=express&logoColor=white
-[mongoose]: https://img.shields.io/badge/Mongoose-2A2A2A?style=for-the-badge&logo=mongoose&logoColor=white
-[angular]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
-[angular-material]: https://img.shields.io/badge/Angular%20Material-DD0031?style=for-the-badge&logo=angular&logoColor=white
-[nodejs]: https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white
-[netsjs]: https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white
-[swagger]: https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black
-[jest]: https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white
-[react-hot-toast]: https://img.shields.io/badge/React--Hot--Toast-2A2A2A?style=for-the-badge&logo=npm&logoColor=white
-[github-api]: https://img.shields.io/badge/Github%20API-181717?style=for-the-badge&logo=github&logoColor=white
-[date-fns]: https://img.shields.io/badge/Date--fns-F7841B?style=for-the-badge&logo=date-fns&logoColor=white
 [django]: https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=green
 [django-rest-framework]: https://img.shields.io/badge/django%20rest-092E20?style=for-the-badge&logo=django&logoColor=green
-[coreapi]: https://img.shields.io/badge/Coreapi-2A2A2A.svg?style=for-the-badge&logo=npm
-[bcrypt]: https://img.shields.io/badge/Bcrypt-2A2A2A?style=for-the-badge&logo=npm&logoColor=white
-[recharts]: https://img.shields.io/badge/Recharts-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[use-debounce]: https://img.shields.io/badge/Use--Debounce-2A2A2A?style=for-the-badge&logo=npm&logoColor=white
-[framer-motion]: https://img.shields.io/badge/Framer%20Motion-2A2A2A?style=for-the-badge&logo=npm&logoColor=white
-[tsparticles]: https://img.shields.io/badge/Tsparticles-2A2A2A?style=for-the-badge&logo=npm&logoColor=white
-[swiper]: https://img.shields.io/badge/Swiper-6332D2?style=for-the-badge&logo=swiper&logoColor=white
-[react-countup]: https://img.shields.io/badge/React%20Countup-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[cloudinary]: https://img.shields.io/badge/Cloudinary-4285F4?style=for-the-badge&logo=cloudinary&logoColor=white
-[query-string]: https://img.shields.io/badge/Query%20String-2A2A2A?style=for-the-badge&logo=npm&logoColor=white
-[react-date-range]: https://img.shields.io/badge/React%20Date%20Range-2A2A2A?style=for-the-badge&logo=npm&logoColor=white
+[python]: https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white
+[react]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[vite]: https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white
+[tailwindcss]: https://img.shields.io/badge/Tailwind%20CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
+[axios]: https://img.shields.io/badge/Axios-671ddf?style=for-the-badge&logo=axios&logoColor=white
 [react-hook-form]: https://img.shields.io/badge/React%20Hook%20Form-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[react-spinners]: https://img.shields.io/badge/React%20spinners-2A2A2A?style=for-the-badge&logo=npm&logoColor=white
-[world-countries-data]: https://img.shields.io/badge/World%20countries%20data-2A2A2A?style=for-the-badge&logo=npm&logoColor=white
-[react-leaflet]: https://img.shields.io/badge/React%20Leaflet-2A2A2A?style=for-the-badge&logo=npm&logoColor=white
-[react-select]: https://img.shields.io/badge/React%20Select-2A2A2A?style=for-the-badge&logo=npm&logoColor=white
 
-<!-- Badges links -->
-[nextjs-link]: https://nextjs.org/
-[typescript-link]: https://www.typescriptlang.org/
-[tailwindcss-link]: https://tailwindcss.com/
-[react-link]: https://reactjs.org/
-[lodash-link]: https://lodash.com/
-[next-auth-link]: https://next-auth.js.org/
-[prisma-link]: https://www.prisma.io/
-[axios-link]: https://axios-http.com/
-[react-icons-link]: https://react-icons.github.io/react-icons/
-[swr-link]: https://swr.vercel.app/
-[zustand-link]: https://zustand.surge.sh/
-[react-player-link]: https://www.npmjs.com/package/react-player
-[mongodb-link]: https://www.mongodb.com/
-[vercel-link]: https://vercel.com/
-[html-link]: https://developer.mozilla.org/en-US/docs/Web/HTML
-[css-link]: https://developer.mozilla.org/en-US/docs/Web/CSS
-[javascript-link]: https://developer.mozilla.org/en-US/docs/Web/JavaScript
-[netlify-link]: https://www.netlify.com/
-[vite-link]: https://vitejs.dev/
-[astro-link]: https://astro.build/
-[express-link]: https://expressjs.com/
-[mongoose-link]: https://mongoosejs.com/
-[angular-link]: https://angular.io/
-[angular-material-link]: https://material.angular.io/
-[nodejs-link]: https://nodejs.org/en/
-[netsjs-link]: https://nestjs.com/
-[swagger-link]: https://swagger.io/
-[jest-link]: https://jestjs.io/
-[react-hot-toast-link]: https://react-hot-toast.com/
-[github-api-link]: https://docs.github.com/en/rest
-[date-fns-link]: https://date-fns.org/
+<!-- Badge links -->
 [django-link]: https://www.djangoproject.com/
 [django-rest-framework-link]: https://www.django-rest-framework.org/
-[coreapi-link]: https://www.coreapi.org/
+[python-link]: https://www.python.org/
+[react-link]: https://react.dev/
+[vite-link]: https://vite.dev/
+[tailwindcss-link]: https://tailwindcss.com/
+[axios-link]: https://axios-http.com/
+[react-hook-form-link]: https://react-hook-form.com/
+
+<!-- Status/Demo badges -->
+[demo]: https://img.shields.io/badge/🚀%20Live%20Demo-000000?style=for-the-badge&&logoColor=white&color=0a6bdb
+[status-link]: https://github.com/wrujel/monitor-repos
+[tests-link]: https://github.com/wrujel/monitor-tests
+
+[demo-link]: {{DEMO_URL}}
+[status]: https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fwrujel%2Fmonitor-repos%2Fmain%2Fdata%2Fdjango-crud-react.json
+[tests]: https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fwrujel%2Fmonitor-tests%2Fmain%2Fdata%2Fdjango-crud-react.json
