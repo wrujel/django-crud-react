@@ -17,7 +17,7 @@
 </div>
 
 <div align='center'>
-  <h1>CRUD Task App with Django and React</h1>
+  <h1>Task App with Django and React</h1>
 </div>
 
 <div align='center'>
@@ -30,11 +30,12 @@
   [![Tailwind CSS][tailwindcss]][tailwindcss-link]
   [![Axios][axios]][axios-link]
   [![React Hook Form][react-hook-form]][react-hook-form-link]
+  [![React Hot Toast][react-hot-toast]][react-hot-toast-link]
 
 </div>
 
 <div align='center'>
-  A full-stack CRUD task management application built with Django REST Framework on the backend and React with Vite on the frontend. Create, read, update, and delete tasks with a modern, responsive UI styled with Tailwind CSS.
+  Full-stack CRUD application for managing tasks, built with Django REST Framework on the backend and React with Vite on the frontend. Features a clean UI styled with Tailwind CSS and toast notifications.
 
   [Demo]({{DEMO_URL}}) · [Report issue](/issues) · [Suggest something](/issues)
 </div>
@@ -59,18 +60,17 @@
 ## Features
 
 - [x] Full CRUD operations for tasks (Create, Read, Update, Delete)
-- [x] REST API built with Django REST Framework
-- [x] React frontend with Vite for fast development
-- [x] Responsive UI styled with Tailwind CSS
-- [x] Form handling with React Hook Form
-- [x] Client-side routing with React Router DOM
+- [x] RESTful API built with Django REST Framework
+- [x] React frontend powered by Vite for fast development
+- [x] Responsive design with Tailwind CSS
+- [x] Form validation with React Hook Form
 - [x] Toast notifications with React Hot Toast
-- [x] API documentation with CoreAPI
-- [x] CORS support with django-cors-headers
-- [x] Static file serving with WhiteNoise
-- [x] Database configuration with dj-database-url
-- [x] Production-ready deployment with Gunicorn
-- [x] Deployable on Railway with Nixpacks
+- [x] Client-side routing with React Router
+- [x] Auto-generated API documentation with CoreAPI
+- [x] CORS support for cross-origin requests
+- [x] Static files served with WhiteNoise
+- [x] Database flexibility via dj-database-url (SQLite or PostgreSQL)
+- [x] Production-ready with Gunicorn and Railway deployment
 
 ## Tech Stack
 
@@ -82,8 +82,9 @@
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Axios](https://axios-http.com/)
 - [React Hook Form](https://react-hook-form.com/)
-- [React Router DOM](https://reactrouter.com/)
 - [React Hot Toast](https://react-hot-toast.com/)
+- [React Router](https://reactrouter.com/)
+- [CoreAPI](https://www.coreapi.org/)
 - [WhiteNoise](https://whitenoise.readthedocs.io/)
 - [Gunicorn](https://gunicorn.org/)
 
@@ -94,6 +95,7 @@
 - Python 3.10+
 - Node.js 18+
 - npm
+- pip
 
 ### Installation
 
@@ -108,45 +110,39 @@ cd ..
 
 ### Running locally
 
-Start the Django backend:
+Start the backend server:
 
 ```bash
 python manage.py migrate
 python manage.py runserver
 ```
 
-In a separate terminal, start the React frontend:
+In a separate terminal, start the frontend dev server:
 
 ```bash
 cd client
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) with your browser to see the React frontend.
-The Django API will be available at [http://localhost:8000](http://localhost:8000).
+Open [http://localhost:5173](http://localhost:5173) with your browser to see the React app. The Django API runs at [http://localhost:8000](http://localhost:8000).
 
 ### Build
 
-Build the React frontend for production:
+Build the frontend for production:
 
 ```bash
 cd client
 npm run build
 ```
 
-Then collect static files and run with Gunicorn:
-
-```bash
-python manage.py collectstatic
-gunicorn django_crud_api.wsgi
-```
-
 ## Environment Variables
 
-| Variable           | Description                                                | Required |
-| :----------------- | :--------------------------------------------------------- | :------: |
-| `DATABASE_URL`     | Database connection string (defaults to SQLite if not set) |    No    |
-| `VITE_BACKEND_URL` | Backend URL for the React app in production                |   Yes    |
+To run this project, you may need to configure the following environment variables:
+
+| Variable           | Description                                             | Required |
+| :----------------- | :------------------------------------------------------ | :------: |
+| `DATABASE_URL`     | Database connection URL (defaults to SQLite if not set) |    No    |
+| `VITE_BACKEND_URL` | Backend API URL used by the React app in production     |    No    |
 
 ## Project Structure
 
@@ -155,15 +151,9 @@ gunicorn django_crud_api.wsgi
 ├── client/                  # React frontend
 │   ├── public/
 │   ├── src/
-│   │   ├── api/
-│   │   │   └── tasks.api.js
-│   │   ├── components/
-│   │   │   ├── Navigation.jsx
-│   │   │   ├── TaskCard.jsx
-│   │   │   └── TasksList.jsx
-│   │   ├── pages/
-│   │   │   ├── TasksFormPage.jsx
-│   │   │   └── TasksPage.jsx
+│   │   ├── api/             # API client (Axios)
+│   │   ├── components/      # Reusable components
+│   │   ├── pages/           # Page components
 │   │   ├── App.jsx
 │   │   └── main.jsx
 │   ├── package.json
@@ -183,8 +173,7 @@ gunicorn django_crud_api.wsgi
 ├── manage.py
 ├── requirements.txt
 ├── Procfile
-├── nixpacks.toml
-└── runtime.txt
+└── nixpacks.toml
 ```
 
 ## Demo
@@ -202,7 +191,8 @@ You can check out the demo:
 | `GET`    | `/tasks/api/v1/tasks/:id/` | Get task by ID    |      No       |
 | `PUT`    | `/tasks/api/v1/tasks/:id/` | Update a task     |      No       |
 | `DELETE` | `/tasks/api/v1/tasks/:id/` | Delete a task     |      No       |
-| `GET`    | `/tasks/docs/`             | API documentation |      No       |
+
+API documentation is also available at `/tasks/docs/` powered by CoreAPI.
 
 ## Contributing
 
@@ -229,6 +219,7 @@ This project is licensed under the [MIT License](LICENSE).
 [tailwindcss]: https://img.shields.io/badge/Tailwind%20CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
 [axios]: https://img.shields.io/badge/Axios-671ddf?style=for-the-badge&logo=axios&logoColor=white
 [react-hook-form]: https://img.shields.io/badge/React%20Hook%20Form-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[react-hot-toast]: https://img.shields.io/badge/React--Hot--Toast-2A2A2A?style=for-the-badge&logo=npm&logoColor=white
 
 <!-- Badge links -->
 [django-link]: https://www.djangoproject.com/
@@ -239,12 +230,13 @@ This project is licensed under the [MIT License](LICENSE).
 [tailwindcss-link]: https://tailwindcss.com/
 [axios-link]: https://axios-http.com/
 [react-hook-form-link]: https://react-hook-form.com/
+[react-hot-toast-link]: https://react-hot-toast.com/
 
 <!-- Status/Demo badges -->
 [demo]: https://img.shields.io/badge/🚀%20Live%20Demo-000000?style=for-the-badge&&logoColor=white&color=0a6bdb
 [status-link]: https://github.com/wrujel/monitor-repos
 [tests-link]: https://github.com/wrujel/monitor-tests
 
-[demo-link]: {{DEMO_URL}}
+[demo-link]: https://django-crud-react.onrender.com/
 [status]: https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fwrujel%2Fmonitor-repos%2Fmain%2Fdata%2Fdjango-crud-react.json
 [tests]: https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fwrujel%2Fmonitor-tests%2Fmain%2Fdata%2Fdjango-crud-react.json
