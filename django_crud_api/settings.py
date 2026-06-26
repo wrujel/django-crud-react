@@ -22,12 +22,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-$g3)^i!%l3!el4xeh_b_b002h&lpbacrx-sl^u^#je%sx_g0mf"
+# Set the SECRET_KEY environment variable in production; the fallback below is
+# for local development only.
+SECRET_KEY = os.environ.get(
+    "SECRET_KEY",
+    "django-insecure-$g3)^i!%l3!el4xeh_b_b002h&lpbacrx-sl^u^#je%sx_g0mf",
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Defaults to True for local development; set DEBUG=False in production.
+DEBUG = os.environ.get("DEBUG", "True").lower() in ("true", "1", "yes", "on")
 
-ALLOWED_HOSTS = ["*"]
+# Comma-separated list of allowed hosts; defaults to "*" for local development.
+# Set ALLOWED_HOSTS to your domain(s) in production, e.g. "example.com,www.example.com".
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(",")
 
 
 # Application definition
@@ -41,8 +49,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "whitenoise.runserver_nostatic",
     "rest_framework",
+    "drf_spectacular",
+    "drf_spectacular_sidecar",
     "corsheaders",
-    "coreapi",
     "tasks",
 ]
 
@@ -133,7 +142,16 @@ STATIC_URL = "static/"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "client", "dist")]
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# STORAGES replaces the STATICFILES_STORAGE setting, which was removed in Django 5.1.
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -145,5 +163,18 @@ CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
 
 # REST Framework
 REST_FRAMEWORK = {
-    "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+# drf-spectacular (OpenAPI 3 schema + Swagger UI / ReDoc), replaces CoreAPI.
+# "SIDECAR" serves the UI assets from drf-spectacular-sidecar (bundled locally)
+# instead of an external CDN.
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Tasks API",
+    "DESCRIPTION": "Full-stack CRUD application for managing tasks.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "SWAGGER_UI_DIST": "SIDECAR",
+    "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
+    "REDOC_DIST": "SIDECAR",
 }

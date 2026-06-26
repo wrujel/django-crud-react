@@ -1,8 +1,8 @@
 <div align='center'>
 
-  [![demo][demo]][demo-link]
-  [![status][status]][status-link]
-  [![test][tests]][tests-link]
+[![demo][demo]][demo-link]
+[![status][status]][status-link]
+[![test][tests]][tests-link]
 
 </div>
 
@@ -22,22 +22,23 @@
 
 <div align='center'>
 
-  [![Django][django]][django-link]
-  [![Django REST Framework][django-rest-framework]][django-rest-framework-link]
-  [![Python][python]][python-link]
-  [![React][react]][react-link]
-  [![Vite][vite]][vite-link]
-  [![Tailwind CSS][tailwindcss]][tailwindcss-link]
-  [![Axios][axios]][axios-link]
-  [![React Hook Form][react-hook-form]][react-hook-form-link]
-  [![React Hot Toast][react-hot-toast]][react-hot-toast-link]
+[![Django][django]][django-link]
+[![Django REST Framework][django-rest-framework]][django-rest-framework-link]
+[![Python][python]][python-link]
+[![React][react]][react-link]
+[![Vite][vite]][vite-link]
+[![Tailwind CSS][tailwindcss]][tailwindcss-link]
+[![Axios][axios]][axios-link]
+[![React Hook Form][react-hook-form]][react-hook-form-link]
+[![React Hot Toast][react-hot-toast]][react-hot-toast-link]
 
 </div>
 
 <div align='center'>
   Full-stack CRUD application for managing tasks, built with Django REST Framework on the backend and React with Vite on the frontend. Features a clean UI styled with Tailwind CSS and toast notifications.
 
-  [Demo]({{DEMO_URL}}) · [Report issue](/issues) · [Suggest something](/issues)
+[Demo]({{DEMO_URL}}) · [Report issue](/issues) · [Suggest something](/issues)
+
 </div>
 
 ## Table of Contents
@@ -66,7 +67,7 @@
 - [x] Form validation with React Hook Form
 - [x] Toast notifications with React Hot Toast
 - [x] Client-side routing with React Router
-- [x] Auto-generated API documentation with CoreAPI
+- [x] Auto-generated API documentation with drf-spectacular (OpenAPI 3 / Swagger UI)
 - [x] CORS support for cross-origin requests
 - [x] Static files served with WhiteNoise
 - [x] Database flexibility via dj-database-url (SQLite or PostgreSQL)
@@ -75,16 +76,16 @@
 ## Tech Stack
 
 - [Python](https://www.python.org/)
-- [Django 4.2](https://www.djangoproject.com/)
+- [Django 5.2](https://www.djangoproject.com/)
 - [Django REST Framework](https://www.django-rest-framework.org/)
-- [React 18](https://react.dev/)
+- [React 19](https://react.dev/)
 - [Vite](https://vite.dev/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Axios](https://axios-http.com/)
 - [React Hook Form](https://react-hook-form.com/)
 - [React Hot Toast](https://react-hot-toast.com/)
 - [React Router](https://reactrouter.com/)
-- [CoreAPI](https://www.coreapi.org/)
+- [drf-spectacular](https://drf-spectacular.readthedocs.io/)
 - [WhiteNoise](https://whitenoise.readthedocs.io/)
 - [Gunicorn](https://gunicorn.org/)
 
@@ -93,15 +94,37 @@
 ### Prerequisites
 
 - Python 3.10+
-- Node.js 18+
+- Node.js 20.19+ (22 LTS recommended)
 - npm
 - pip
 
 ### Installation
 
+Clone the repository:
+
 ```bash
 git clone https://github.com/wrujel/django-crud-react.git
 cd django-crud-react
+```
+
+Create and activate a virtual environment (keeps the backend dependencies isolated):
+
+```bash
+python -m venv .venv
+
+# macOS / Linux
+source .venv/bin/activate
+
+# Windows (PowerShell)
+.\.venv\Scripts\Activate.ps1
+
+# Windows (cmd)
+.venv\Scripts\activate.bat
+```
+
+Install the backend and frontend dependencies:
+
+```bash
 pip install -r requirements.txt
 cd client
 npm install
@@ -110,7 +133,7 @@ cd ..
 
 ### Running locally
 
-Start the backend server:
+Start the backend server (make sure the virtual environment is activated):
 
 ```bash
 python manage.py migrate
@@ -139,10 +162,13 @@ npm run build
 
 To run this project, you may need to configure the following environment variables:
 
-| Variable           | Description                                             | Required |
-| :----------------- | :------------------------------------------------------ | :------: |
-| `DATABASE_URL`     | Database connection URL (defaults to SQLite if not set) |    No    |
-| `VITE_BACKEND_URL` | Backend API URL used by the React app in production     |    No    |
+| Variable           | Description                                               | Required |
+| :----------------- | :-------------------------------------------------------- | :------: |
+| `DATABASE_URL`     | Database connection URL (defaults to SQLite if not set)   |    No    |
+| `VITE_BACKEND_URL` | Backend API URL used by the React app in production       |    No    |
+| `SECRET_KEY`       | Django secret key (insecure dev fallback if unset)        |   Prod   |
+| `DEBUG`            | Debug mode; set to `False` in production (default `True`) |    No    |
+| `ALLOWED_HOSTS`    | Comma-separated allowed hosts (default `*`)               |   Prod   |
 
 ## Project Structure
 
@@ -192,7 +218,7 @@ You can check out the demo:
 | `PUT`    | `/tasks/api/v1/tasks/:id/` | Update a task     |      No       |
 | `DELETE` | `/tasks/api/v1/tasks/:id/` | Delete a task     |      No       |
 
-API documentation is also available at `/tasks/docs/` powered by CoreAPI.
+Interactive API documentation (Swagger UI) is available at `/tasks/docs/`, powered by drf-spectacular. The raw OpenAPI 3 schema is served at `/tasks/schema/`.
 
 ## Contributing
 
@@ -211,6 +237,7 @@ This project is licensed under the [MIT License](LICENSE).
 ---
 
 <!-- Badges -->
+
 [django]: https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=green
 [django-rest-framework]: https://img.shields.io/badge/django%20rest-092E20?style=for-the-badge&logo=django&logoColor=green
 [python]: https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white
@@ -222,6 +249,7 @@ This project is licensed under the [MIT License](LICENSE).
 [react-hot-toast]: https://img.shields.io/badge/React--Hot--Toast-2A2A2A?style=for-the-badge&logo=npm&logoColor=white
 
 <!-- Badge links -->
+
 [django-link]: https://www.djangoproject.com/
 [django-rest-framework-link]: https://www.django-rest-framework.org/
 [python-link]: https://www.python.org/
@@ -233,10 +261,10 @@ This project is licensed under the [MIT License](LICENSE).
 [react-hot-toast-link]: https://react-hot-toast.com/
 
 <!-- Status/Demo badges -->
+
 [demo]: https://img.shields.io/badge/🚀%20Live%20Demo-000000?style=for-the-badge&&logoColor=white&color=0a6bdb
 [status-link]: https://github.com/wrujel/monitor-repos
 [tests-link]: https://github.com/wrujel/monitor-tests
-
 [demo-link]: https://django-crud-react.onrender.com/
 [status]: https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fwrujel%2Fmonitor-repos%2Fmain%2Fdata%2Fdjango-crud-react.json
 [tests]: https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fwrujel%2Fmonitor-tests%2Fmain%2Fdata%2Fdjango-crud-react.json
