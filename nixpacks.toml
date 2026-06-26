@@ -2,3 +2,5 @@ providers = ["node", "python"]
 
 [variables]
 NODE_ENV = 'production'
+# Vite 8 requires Node >= 20.19 / 22.12; pin the build to Node 22 LTS.
+NIXPACKS_NODE_VERSION = '22'
