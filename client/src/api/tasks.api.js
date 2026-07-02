@@ -1,21 +1,13 @@
-import axios from "axios";
+import { http } from "../lib/http";
+import { createResource } from "../lib/resource";
 
-const URL =
-  // eslint-disable-next-line no-undef
-  process.env.NODE_ENV === "production"
-    ? import.meta.env.VITE_BACKEND_URL
-    : "http://localhost:8000";
+const TASKS_PATH = "/tasks/api/v1/tasks/";
 
-const tasksUrl = axios.create({
-  baseURL: `${URL}/tasks/api/v1/tasks/`,
-});
-
-export const getTask = (id) => tasksUrl.get(`/${id}/`);
-
-export const getAllTasks = () => tasksUrl.get("/");
-
-export const createTask = (task) => tasksUrl.post("/", task);
-
-export const deleteTask = (id) => tasksUrl.delete(`/${id}`);
-
-export const updateTask = (id, task) => tasksUrl.put(`/${id}/`, task);
+/**
+ * Tasks API: generic CRUD from createResource() plus the custom `stats`
+ * aggregate endpoint exposed by the DRF viewset.
+ */
+export const tasksApi = {
+  ...createResource(TASKS_PATH),
+  stats: () => http.get(`${TASKS_PATH}stats/`).then((r) => r.data),
+};

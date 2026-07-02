@@ -3,6 +3,7 @@
 [![demo][demo]][demo-link]
 [![status][status]][status-link]
 [![test][tests]][tests-link]
+[![ci][ci]][ci-link]
 
 </div>
 
@@ -51,6 +52,7 @@
   - [Installation](#installation)
   - [Running locally](#running-locally)
   - [Build](#build)
+  - [Running tests](#running-tests)
 - [Environment Variables](#environment-variables)
 - [Project Structure](#project-structure)
 - [Demo](#demo)
@@ -156,6 +158,26 @@ Build the frontend for production:
 ```bash
 cd client
 npm run build
+```
+
+### Running tests
+
+Both suites enforce a **95% coverage gate** and generate HTML reports; CI runs them on every push and pull request.
+
+Backend (pytest + coverage, ~50 tests):
+
+```bash
+pip install -r requirements-dev.txt
+pytest                      # coverage table + htmlcov/ report
+```
+
+Frontend (Vitest + Testing Library, ~220 tests):
+
+```bash
+cd client
+npm test                    # run once
+npm run test:watch          # watch mode
+npm run test:coverage       # with coverage gate + coverage/ report
 ```
 
 ## Environment Variables
@@ -268,3 +290,5 @@ This project is licensed under the [MIT License](LICENSE).
 [demo-link]: https://django-crud-react.onrender.com/
 [status]: https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fwrujel%2Fmonitor-repos%2Fmain%2Fdata%2Fdjango-crud-react.json
 [tests]: https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fwrujel%2Fmonitor-tests%2Fmain%2Fdata%2Fdjango-crud-react.json
+[ci]: https://github.com/wrujel/django-crud-react/actions/workflows/ci.yml/badge.svg
+[ci-link]: https://github.com/wrujel/django-crud-react/actions/workflows/ci.yml

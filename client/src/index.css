@@ -1,6 +1,156 @@
 @import "tailwindcss";
 
-body {
-  background-color: #202020;
-  color: white;
+/* ------------------------------------------------------------------ *
+ * Design tokens — a refined, Linear/Vercel-style dark theme.
+ * Exposed to Tailwind v4 via @theme so utilities like `bg-surface`,
+ * `text-muted`, `border-line`, `shadow-pop` are generated automatically.
+ * ------------------------------------------------------------------ */
+@theme {
+  /* Surfaces */
+  --color-canvas: #09090b;
+  --color-surface: #131318;
+  --color-surface-2: #1a1a21;
+  --color-elevated: #1f1f27;
+
+  /* Lines / borders */
+  --color-line: #26262e;
+  --color-line-soft: #1d1d24;
+  --color-line-strong: #34343e;
+
+  /* Text */
+  --color-fg: #ededf1;
+  --color-muted: #9b9ba7;
+  --color-faint: #6b6b78;
+
+  /* Brand accent (indigo → violet) */
+  --color-accent: #7c6cf6;
+  --color-accent-2: #b06cf8;
+  --color-accent-strong: #6455e8;
+
+  /* Semantic */
+  --color-success: #34d399;
+  --color-warning: #f5b14c;
+  --color-danger: #fb6f84;
+
+  /* Priority scale */
+  --color-prio-low: #58b2f0;
+  --color-prio-medium: #f5b14c;
+  --color-prio-high: #f4607a;
+
+  /* Typography */
+  --font-sans:
+    "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+
+  /* Elevation */
+  --shadow-soft:
+    0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 28px -16px rgba(0, 0, 0, 0.7);
+  --shadow-pop:
+    0 24px 60px -20px rgba(0, 0, 0, 0.75), 0 8px 20px -12px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 8px 28px -8px
+    color-mix(in oklab, var(--color-accent) 55%, transparent);
+
+  /* Motion */
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  --animate-float: float 7s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -16px, 0);
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Base
+ * ------------------------------------------------------------------ */
+@layer base {
+  html {
+    color-scheme: dark;
+    /* Reserve the scrollbar gutter so the page never shifts horizontally
+       when content height crosses the viewport (e.g. while searching). */
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    /* Ambient depth: two faint brand glows fixed behind the content. */
+    background-image:
+      radial-gradient(
+        60rem 60rem at 12% -10%,
+        color-mix(in oklab, var(--color-accent) 14%, transparent),
+        transparent 60%
+      ),
+      radial-gradient(
+        50rem 50rem at 108% 4%,
+        color-mix(in oklab, var(--color-accent-2) 12%, transparent),
+        transparent 55%
+      );
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-accent) 40%, transparent);
+    color: #fff;
+  }
+
+  /* Slim, theme-aware scrollbars */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-strong) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: var(--color-line-strong);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: var(--color-faint);
+    background-clip: content-box;
+  }
+}
+
+/* ------------------------------------------------------------------ *
+ * Reusable utilities
+ * ------------------------------------------------------------------ */
+@utility glass {
+  background: color-mix(in oklab, var(--color-surface) 72%, transparent);
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
+}
+
+/* Skeleton shimmer surface */
+@utility skeleton {
+  background: linear-gradient(
+    100deg,
+    var(--color-surface-2) 30%,
+    var(--color-elevated) 50%,
+    var(--color-surface-2) 70%
+  );
+  background-size: 200% 100%;
+  animation: var(--animate-shimmer);
 }

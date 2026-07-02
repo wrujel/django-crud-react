@@ -5,7 +5,7 @@ from tasks import views
 
 # api versioning
 router = routers.DefaultRouter()
-router.register(r"tasks", views.TaskView, "task")
+router.register(r"tasks", views.TaskViewSet, "task")
 
 urlpatterns = [
     path("api/v1/", include(router.urls)),

@@ -1,7 +1,14 @@
 db.sqlite3
 venv
+.venv/
 __pycache__
 staticfiles/
 
 # environment variables
 .env.local
+
+# test & coverage artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+client/coverage/

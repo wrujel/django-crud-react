@@ -30,6 +30,18 @@ export default [
         "warn",
         { allowConstantExport: true },
       ],
+      // This is a modern JS (non-TS) codebase that leans on a shared UI kit;
+      // runtime prop-types add noise without type-checking value.
+      "react/prop-types": "off",
+    },
+  },
+  {
+    // Test files: anonymous stub components in vi.mock factories trip
+    // display-name, and test modules legitimately export non-components.
+    files: ["src/**/*.test.{js,jsx}", "src/test/**"],
+    rules: {
+      "react/display-name": "off",
+      "react-refresh/only-export-components": "off",
     },
   },
 ];

@@ -1,0 +1,30 @@
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "django_crud_api.settings"
+# "tests.py" keeps the pre-existing tasks/tests.py discoverable alongside
+# the newer test_*.py modules.
+python_files = ["tests.py", "test_*.py"]
+testpaths = ["tasks", "tests"]
+addopts = "--cov --cov-report=term-missing --cov-report=html"
+
+[tool.coverage.run]
+branch = true
+# Measure the whole repo so no hand-written module can silently drop out of
+# the report; everything generated or non-backend is omitted explicitly.
+source = ["."]
+omit = [
+    "*/migrations/*",
+    "tasks/tests.py",
+    "tasks/test_*.py",
+    "tests/*",
+    ".venv/*",
+    "client/*",
+    "staticfiles/*",
+]
+
+[tool.coverage.report]
+fail_under = 95
+show_missing = true
+precision = 1
+
+[tool.coverage.html]
+directory = "htmlcov"
