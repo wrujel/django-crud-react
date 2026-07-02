@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "whitenoise.runserver_nostatic",
     "rest_framework",
+    "django_filters",
     "drf_spectacular",
     "drf_spectacular_sidecar",
     "corsheaders",
@@ -164,6 +165,15 @@ CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
 # REST Framework
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    # Paginate list endpoints so large task sets don't return unbounded
+    # payloads. The client appends pages on demand ("Load more").
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 24,
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
+        "rest_framework.filters.OrderingFilter",
+    ],
 }
 
 # drf-spectacular (OpenAPI 3 schema + Swagger UI / ReDoc), replaces CoreAPI.
