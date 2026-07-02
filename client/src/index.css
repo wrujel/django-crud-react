@@ -81,6 +81,9 @@
 @layer base {
   html {
     color-scheme: dark;
+    /* Reserve the scrollbar gutter so the page never shifts horizontally
+       when content height crosses the viewport (e.g. while searching). */
+    scrollbar-gutter: stable;
   }
 
   body {
