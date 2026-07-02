@@ -313,5 +313,5 @@ This project is licensed under the [MIT License](LICENSE).
 [status-link]: https://github.com/wrujel/monitor-repos
 [tests]: https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fwrujel%2Fmonitor-tests%2Fmain%2Fdata%2Fdjango-crud-react.json
 [tests-link]: https://github.com/wrujel/monitor-tests
-[ci]: https://github.com/wrujel/django-crud-react/actions/workflows/ci.yml/badge.svg
+[ci]: https://img.shields.io/github/actions/workflow/status/wrujel/django-crud-react/ci.yml?branch=master&style=for-the-badge&label=CI
 [ci-link]: https://github.com/wrujel/django-crud-react/actions/workflows/ci.yml
