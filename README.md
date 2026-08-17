@@ -10,7 +10,7 @@
 <div align='center'>
   <a href='/'>
     <img
-      src='/images/screenshot.png'
+      src='screenshot.webp'
       alt='Screenshot of the app'
       width='100%'
     />
@@ -42,7 +42,7 @@
 <div align='center'>
   Modern full-stack task manager built with Django REST Framework and React. Dark Linear-style UI with animations, priorities and due dates, live search and filters, drag-and-drop ordering, a stats dashboard — backed by test suites with 95% coverage gates and a CI pipeline.
 
-[Demo](https://django-crud-react.onrender.com/) · [Report issue](/issues) · [Suggest something](/issues)
+[Demo][demo-link] · [Report issue](/issues) · [Suggest something](/issues)
 
 </div>
 
