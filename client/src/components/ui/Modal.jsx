@@ -29,6 +29,9 @@ export function Modal({
     // Focus the first meaningful control once the dialog is mounted.
     const focusTimer = setTimeout(() => {
       const node = dialogRef.current;
+      // Defensive only: the dialog holds this ref for as long as the
+      // effect is alive, so no test can observe it missing.
+      /* v8 ignore next */
       if (!node) return;
       const focusables = node.querySelectorAll(FOCUSABLE);
       (focusables[1] ?? focusables[0] ?? node).focus();

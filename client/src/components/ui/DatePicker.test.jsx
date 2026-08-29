@@ -162,4 +162,18 @@ describe("DatePicker", () => {
     expect(dialog.style.bottom).not.toBe("");
     expect(dialog.style.top).toBe("");
   });
+
+  it("repositions the calendar on scroll and on resize", async () => {
+    const { trigger } = renderPicker();
+    const dialog = await open(trigger);
+
+    // The scroll/resize listeners recompute the popover's fixed position, so
+    // the trigger gets measured again for each event.
+    const rectSpy = vi.spyOn(trigger, "getBoundingClientRect");
+    fireEvent.scroll(window);
+    fireEvent(window, new Event("resize"));
+
+    expect(rectSpy).toHaveBeenCalledTimes(2);
+    expect(dialog).toBeInTheDocument();
+  });
 });

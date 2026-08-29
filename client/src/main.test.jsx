@@ -19,9 +19,15 @@ describe("main bootstrap", () => {
     document.body.innerHTML = '<div id="root"></div>';
   });
 
-  it("mounts the app into #root", async () => {
-    await import("./main.jsx");
-    expect(createRoot).toHaveBeenCalledWith(document.getElementById("root"));
-    expect(render).toHaveBeenCalledTimes(1);
-  });
+  // Importing the real entrypoint pulls in index.css, so this test pays for
+  // Tailwind's transform on a cold cache — well past the 5s default.
+  it(
+    "mounts the app into #root",
+    async () => {
+      await import("./main.jsx");
+      expect(createRoot).toHaveBeenCalledWith(document.getElementById("root"));
+      expect(render).toHaveBeenCalledTimes(1);
+    },
+    30_000,
+  );
 });

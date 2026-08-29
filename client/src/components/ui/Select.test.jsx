@@ -174,4 +174,56 @@ describe("Select", () => {
     fireEvent(window, new Event("resize"));
     expect(screen.getByRole("listbox")).toBeInTheDocument();
   });
+
+  it("falls back to the full menu height when the trigger leaves no room", async () => {
+    const { trigger } = renderSelect();
+    // Trigger spans the viewport down to 16px from the bottom: the computed
+    // room below is exactly the 16px gutter, so `maxHeight` works out to 0
+    // and the `|| MENU_MAX_H` fallback takes over.
+    trigger.getBoundingClientRect = () => ({
+      top: 0,
+      bottom: window.innerHeight - 16,
+      left: 10,
+      right: 200,
+      width: 190,
+      height: window.innerHeight - 16,
+      x: 10,
+      y: 0,
+    });
+    const listbox = await open(trigger);
+    expect(listbox.style.maxHeight).toBe("288px");
+  });
+
+  it("highlights the first option when the value matches none", async () => {
+    const { trigger, onValueChange } = renderSelect({ value: "nope" });
+    await open(trigger);
+    // No option matches -> activeIndex falls back to 0, so Enter picks Alpha.
+    fireEvent.keyDown(trigger, { key: "Enter" });
+    expect(onValueChange).toHaveBeenCalledWith("a");
+  });
+
+  it("ignores keys it does not handle while open", async () => {
+    const { trigger, onValueChange } = renderSelect();
+    await open(trigger);
+
+    fireEvent.keyDown(trigger, { key: "x" });
+    expect(screen.getByRole("listbox")).toBeInTheDocument();
+    expect(onValueChange).not.toHaveBeenCalled();
+  });
+
+  it("ignores keys it does not handle while closed", () => {
+    const { trigger } = renderSelect();
+    fireEvent.keyDown(trigger, { key: "x" });
+    expect(screen.queryByRole("listbox")).toBeNull();
+    expect(trigger).toHaveAttribute("aria-expanded", "false");
+  });
+
+  it("does nothing on Enter when there are no options to pick", async () => {
+    const { trigger, onValueChange } = renderSelect({ options: [] });
+    await open(trigger);
+
+    fireEvent.keyDown(trigger, { key: "Enter" });
+    expect(onValueChange).not.toHaveBeenCalled();
+    expect(screen.getByRole("listbox")).toBeInTheDocument();
+  });
 });

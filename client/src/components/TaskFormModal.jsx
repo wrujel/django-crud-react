@@ -56,6 +56,9 @@ export function TaskFormModal({ open, task, onClose, onSubmit, onDelete }) {
     try {
       await onSubmit({
         title: data.title,
+        // `reset` always seeds description with a string, so the ??
+        // fallback is belt-and-braces against a future default.
+        /* v8 ignore next */
         description: data.description ?? "",
         priority: Number(data.priority),
         due_date: data.due_date || null,

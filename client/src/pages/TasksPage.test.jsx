@@ -387,4 +387,36 @@ describe("TasksPage", () => {
     await userEvent.click(downs[0]);
     await waitFor(() => expect(toast.error).toHaveBeenCalled());
   });
+
+  it("reorders upward with the arrows", async () => {
+    localStorage.setItem("taskView", JSON.stringify("list"));
+    renderPage();
+    await untilLoaded();
+
+    // The first row's "Move up" is disabled, so drive the second one.
+    const ups = await screen.findAllByRole("button", { name: "Move up" });
+    await userEvent.click(ups[1]);
+
+    await waitFor(() => expect(tasksApi.reorder).toHaveBeenCalledWith([2, 1]));
+    expect(localStorage.getItem("taskSort")).toBe(JSON.stringify("position"));
+  });
+
+  it("dismisses the delete dialog with Cancel", async () => {
+    renderPage();
+    await untilLoaded();
+
+    const card = screen
+      .getByRole("heading", { name: "Alpha task" })
+      .closest("article");
+    await userEvent.click(
+      within(card).getByRole("button", { name: "Delete task" }),
+    );
+    await screen.findByRole("heading", { name: "Delete task?" });
+
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    await waitFor(() =>
+      expect(screen.queryByRole("heading", { name: "Delete task?" })).toBeNull(),
+    );
+    expect(tasksApi.remove).not.toHaveBeenCalled();
+  });
 });

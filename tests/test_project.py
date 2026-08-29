@@ -41,6 +41,14 @@ def test_manage_py_raises_helpful_import_error(monkeypatch):
         runpy.run_path(MANAGE_PY, run_name="__main__")
 
 
+def test_manage_py_import_does_not_execute_a_command(monkeypatch):
+    # Run under a non-"__main__" name: the guard must fall through without
+    # dispatching, which a bogus argv would otherwise turn into a SystemExit.
+    monkeypatch.setattr(sys, "argv", ["manage.py", "not-a-real-command"])
+    namespace = runpy.run_path(MANAGE_PY, run_name="manage")
+    assert callable(namespace["main"])
+
+
 def _reload_settings_with_env(**env):
     """Reload the settings module under a temporary environment."""
     import django_crud_api.settings as settings_module

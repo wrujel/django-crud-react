@@ -79,6 +79,8 @@ export function DatePicker({
 
   const compute = useCallback(() => {
     const el = triggerRef.current;
+    // Defensive only: the trigger is always mounted when this runs.
+    /* v8 ignore next */
     if (!el) return;
     const r = el.getBoundingClientRect();
     const spaceBelow = window.innerHeight - r.bottom;

@@ -149,4 +149,39 @@ describe("Modal", () => {
     );
     await waitFor(() => expect(opener).toHaveFocus());
   });
+
+  it("focuses the dialog itself when nothing inside is focusable", async () => {
+    // No title/onClose means no header close button, and the body holds only
+    // static text -> focusables is empty and the fallback chain lands on the
+    // dialog node itself.
+    render(
+      <Modal open>
+        <p>Nothing focusable here</p>
+      </Modal>,
+    );
+    const dialog = screen.getByRole("dialog");
+    const focusSpy = vi.spyOn(dialog, "focus");
+    await waitFor(() => expect(focusSpy).toHaveBeenCalled());
+  });
+
+  it("ignores Tab when the dialog has no focusable content", () => {
+    render(
+      <Modal open>
+        <p>Nothing focusable here</p>
+      </Modal>,
+    );
+    // The trap bails out instead of indexing into an empty focusables list.
+    expect(() => fireEvent.keyDown(document, { key: "Tab" })).not.toThrow();
+    expect(document.activeElement).toBe(document.body);
+  });
+
+  it("lets Tab through when focus is neither first nor last", async () => {
+    renderModal();
+    const title = screen.getByPlaceholderText("Title");
+    await waitFor(() => expect(title).toHaveFocus());
+
+    // Focus sits mid-list, so the trap wraps in neither direction.
+    fireEvent.keyDown(document, { key: "Tab" });
+    expect(title).toHaveFocus();
+  });
 });

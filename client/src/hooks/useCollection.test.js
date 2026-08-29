@@ -337,4 +337,26 @@ describe("useCollection", () => {
     await expect(reorderPromise).rejects.toBe(boom);
     await waitFor(() => expect(resource.list).toHaveBeenCalledTimes(2));
   });
+
+  it("ignores a superseded request that fails late", async () => {
+    const resource = makeResource();
+    const slow = deferred();
+    const fast = deferred();
+    resource.list
+      .mockImplementationOnce(() => slow.promise)
+      .mockImplementationOnce(() => fast.promise);
+
+    const { result, rerender } = renderCollection(resource, {});
+    rerender({ params: { search: "x" } });
+
+    await act(async () => fast.resolve(page([task(2)])));
+    await waitFor(() => expect(result.current.status).toBe("success"));
+
+    // A genuine (non-cancel) failure from the superseded request must not
+    // clobber the newer request's successful state.
+    await act(async () => slow.reject(new Error("stale boom")));
+    expect(result.current.status).toBe("success");
+    expect(result.current.error).toBeNull();
+    expect(result.current.items).toEqual([task(2)]);
+  });
 });
