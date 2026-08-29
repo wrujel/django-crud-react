@@ -1,0 +1,149 @@
+# Dependency vulnerabilities, reported back to the Content Studio.
+#
+# The studio's scheduler dispatches this MONTHLY (and on demand from
+# Monitoring → Audit), waits for the run, and reads the MONITOR_AUDIT line
+# below into the project's "Deps" tag and the Monitoring dashboard's
+# advisories list. Nothing is committed here and no secret is needed.
+#
+# This repo has two dependency trees — the Django backend (requirements*.txt)
+# and the React client (client/package-lock.json) — so both are scanned and
+# folded into ONE sentinel line.
+#
+# The audit commands must NOT fail this workflow when vulnerabilities exist
+# (report, don't gate) — a red run means the tooling itself broke.
+name: Audit
+
+on:
+  workflow_dispatch: # the studio's scheduler is the only trigger
+
+concurrency:
+  group: audit-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    name: Dependency audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: client/.nvmrc
+
+      # Lockfile-only: no `npm ci`. `|| true` is load-bearing — npm audit
+      # exits 1 when vulns exist, which is the normal case being reported.
+      - name: Audit client dependencies
+        working-directory: client
+        run: npm audit --json > npm-audit.json || true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install pip-audit
+        run: pip install pip-audit
+
+      # Both requirement files: the deployed set plus the dev/test tooling.
+      - name: Audit backend dependencies
+        run: |
+          pip-audit -r requirements.txt -r requirements-dev.txt \
+            -f json -o pip-audit.json || true
+
+      # `always()`: a failing audit step still wrote what it wrote, and a
+      # MISSING report must emit NOTHING (reads as "No report"), never zeros.
+      - name: Report to the studio
+        if: always()
+        run: |
+          node -e '
+            const fs = require("fs");
+            const CAP = 20;
+            const add = (a, b) => ({
+              critical: a.critical + b.critical,
+              high: a.high + b.high,
+              moderate: a.moderate + b.moderate,
+              low: a.low + b.low,
+            });
+            // npm audit: counts in .metadata.vulnerabilities, details in .vulnerabilities
+            function readNpm(file) {
+              try {
+                const a = JSON.parse(fs.readFileSync(file, "utf8"));
+                const m = a.metadata && a.metadata.vulnerabilities;
+                if (!m) return null;
+                const counts = {
+                  critical: m.critical | 0,
+                  high: m.high | 0,
+                  moderate: m.moderate | 0,
+                  low: (m.low | 0) + (m.info | 0),
+                };
+                const advisories = [];
+                for (const v of Object.values(a.vulnerabilities || {})) {
+                  const via = (v.via || []).find((x) => typeof x === "object");
+                  advisories.push({
+                    package: v.name,
+                    severity: v.severity || "unknown",
+                    ...(via && via.title ? { title: String(via.title).slice(0, 200) } : {}),
+                    ...(via && via.url ? { url: via.url } : {}),
+                  });
+                }
+                return { counts, advisories };
+              } catch {
+                return null;
+              }
+            }
+            // pip-audit reports no severity, so every finding counts as
+            // moderate (amber, never silently green) and carries its id.
+            function readPip(file) {
+              try {
+                const a = JSON.parse(fs.readFileSync(file, "utf8"));
+                const deps = a.dependencies;
+                if (!Array.isArray(deps)) return null;
+                const counts = { critical: 0, high: 0, moderate: 0, low: 0 };
+                const advisories = [];
+                for (const d of deps) {
+                  for (const v of d.vulns || []) {
+                    counts.moderate++;
+                    const id = v.id ? String(v.id) : "";
+                    advisories.push({
+                      package: d.name,
+                      severity: "unknown",
+                      ...(id ? { id } : {}),
+                      ...(v.description
+                        ? { title: String(v.description).replace(/\s+/g, " ").slice(0, 200) }
+                        : {}),
+                      ...(id && /^GHSA-/.test(id)
+                        ? { url: "https://github.com/advisories/" + id }
+                        : id
+                          ? { url: "https://osv.dev/vulnerability/" + id }
+                          : {}),
+                    });
+                  }
+                }
+                return { counts, advisories };
+              } catch {
+                return null;
+              }
+            }
+            const npm = readNpm("client/npm-audit.json");
+            const pip = readPip("pip-audit.json");
+            // Both halves or nothing: a partial scan reported as a whole would
+            // read as a clean bill for the ecosystem that failed.
+            if (!npm || !pip) {
+              console.log(
+                "::warning::audit report missing or unreadable (npm=" +
+                  Boolean(npm) + ", pip=" + Boolean(pip) +
+                  ") — emitting no sentinel",
+              );
+            } else {
+              const counts = add(npm.counts, pip.counts);
+              const total = counts.critical + counts.high + counts.moderate + counts.low;
+              const advisories = npm.advisories.concat(pip.advisories).slice(0, CAP);
+              console.log(
+                "::notice title=audit::MONITOR_AUDIT " +
+                  JSON.stringify({ v: 1, counts, total, advisories }),
+              );
+            }
+          '

@@ -7,6 +7,10 @@ staticfiles/
 # environment variables
 .env.local
 
+# dependency-audit reports (audit.yml writes these on the runner)
+pip-audit.json
+client/npm-audit.json
+
 # test & coverage artifacts
 .pytest_cache/
 .coverage
