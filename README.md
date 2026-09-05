@@ -11,7 +11,7 @@
   <a href='/'>
     <img
       src='screenshot.webp'
-      alt='Screenshot of the app'
+      alt='Dark Task Manager app showing total, active, completed and overdue stat tiles above a filtered task list with due-date chips.'
       width='100%'
     />
   </a>
@@ -40,7 +40,7 @@
 </div>
 
 <div align='center'>
-  Modern full-stack task manager built with Django REST Framework and React. Dark Linear-style UI with animations, priorities and due dates, live search and filters, drag-and-drop ordering, a stats dashboard — backed by test suites with 95% coverage gates and a CI pipeline.
+  A modern full-stack task manager built with Django REST Framework and React 19. Dark Linear-inspired UI with staggered motion, task priorities and due dates with overdue highlighting, debounced server-side search and filters, drag-and-drop ordering persisted server-side, switchable grid and list views, and a stats dashboard tracking totals, overdue and completion rate. Gated by pytest and Vitest suites at 95% coverage.
 
 [Demo][demo-link] · [Report issue](/issues) · [Suggest something](/issues)
 
